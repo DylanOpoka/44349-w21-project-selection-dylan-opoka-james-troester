@@ -1,5 +1,7 @@
 //Imports
 import java.util.ArrayList;
+import java.util.Random;
+import java.lang.Math;
 
 public class Algorithms {
     //Swap numbers to sort list
@@ -9,7 +11,7 @@ public class Algorithms {
         L.set(i, L.get(j));
         L.set(j, t);
     }
-    public static int selectInsert(ArrayList<Integer> L, int k)
+    public static ArrayList<Integer> insertionSort(ArrayList<Integer> L)
     {
         //InsertionSort
         for (int i = 0; i < L.size(); i++)
@@ -21,19 +23,24 @@ public class Algorithms {
                 j--;
             }
         }
-        return L.get(k);
+        return L;
+    }
+    public static int selectQuadraticSort(ArrayList<Integer> l, int k)
+    {
+        l = insertionSort(l);
+        return l.get(k);
     }
 
-    public static int selectMerge(ArrayList<Integer> L, int k)
+    public static ArrayList<Integer> mergeSort(ArrayList<Integer> L)
     {
         //MergeSort
         if (L.size() <= 1)
             return L;
         ArrayList<Integer> A = new ArrayList<>(L.subList(0, L.size()/2));
-        A = selectMerge(A, k);
+        A = mergeSort(A);
         ArrayList<Integer> B = new ArrayList<>(L.subList(L.size()/2, L.size()));
-        B = selectMerge(B, k);
-        return L.get(k);
+        B = mergeSort(B);
+        return merge(A, B);
     }
     private static ArrayList<Integer> merge(ArrayList<Integer> A, ArrayList<Integer> B)
     {
@@ -61,12 +68,17 @@ public class Algorithms {
         return C;   
     }
 
+    public static int selectLogarithmicSort(ArrayList<Integer> l, int k)
+    {
+        l = mergeSort(l);
+        return l.get(k);
+    }
     public static int partition(ArrayList<Integer> L, int left, int right, int pivotIndex)
     {
         int pivotValue = L.get(pivotIndex);
-        switchNums(L, L.get(pivotIndex), L.get(right));
+        switchNums(L, pivotIndex, right);
         int storeIndex = left;
-        for (int i = 0; i < right;)
+        for (int i = 0; i <= right; i++)
         {
             if (L.get(i) < pivotValue)
             {
@@ -80,16 +92,20 @@ public class Algorithms {
 
     public static int quickSelect(ArrayList<Integer> L, int left, int right, int k)
     {
+        Random randNum = new Random();
         //If list only has 1 element
-        if (left == right)
-            return L.get(left);
-        int pivotIndex = right;
-        pivotIndex = partition(L, left, right, pivotIndex);
-        if (k == pivotIndex)
-            return L.get(k);
-        else if (k < pivotIndex)
-            return quickSelect(L, left, pivotIndex -1, k);
-        else   
-            return quickSelect(L, pivotIndex + 1, right, k);
+        while (true)
+        {
+            if (left == right)
+                return L.get(left);
+            int pivotIndex = 4;// (int) (left + Math.floor(randNum.nextInt(right) % (right - left + 1)));
+            pivotIndex = partition(L, left, right, pivotIndex);
+            if (k == pivotIndex)
+                return L.get(k);
+            else if (k < pivotIndex)
+                right = pivotIndex - 1;
+            else   
+                left = pivotIndex + 1;
+        }
     } 
 }

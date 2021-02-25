@@ -9,11 +9,11 @@ public class Timing {
         for (int i=0; i<30; i++)
         {
             long start = System.nanoTime();
-            Algorithms.selectInsert(l, k);
+            Algorithms.selectQuadraticSort(l, k);
             long end = System.nanoTime();
             avg += (end - start) / 1000000000.0;
         }
-        return avg;
+        return avg/30;
     }   
     public static double timeMerge(ArrayList<Integer> l, int k)
     {
@@ -21,11 +21,11 @@ public class Timing {
         for (int i=0; i<30; i++)
         {
             long start = System.nanoTime();
-            Algorithms.selectMerge(l, k);
+            Algorithms.selectLogarithmicSort(l, k);
             long end = System.nanoTime();
             avg += (end - start) / 1000000000.0;
         }
-        return avg;
+        return avg/30;
     }
     public static double timeQuickSelect(ArrayList<Integer> l, int size, int k)
     {
@@ -33,11 +33,11 @@ public class Timing {
         for (int i=0; i<30; i++)
         {
             long start = System.nanoTime();
-            Algorithms.quickSelect(l, 0, size, k);
+            Algorithms.quickSelect(l, 0, size-1, k);
             long end = System.nanoTime();
             avg += (end - start) / 1000000000.0;
         }
-        return avg;
+        return avg/30;
     }
 
     public static ArrayList<Integer> randomList(int n)
@@ -50,12 +50,12 @@ public class Timing {
 
     public static void main(String[] args)
     {
-        int sizes[] = {5, 10, 50, 100, 1000, 10000, 100000};
+        int sizes[] = {5, 10, 50, 100, 1000, 10000};
         System.out.println("\tInsertion\tSelection\tMerge");
         for (int size:sizes)
         {
             ArrayList<Integer> randList = randomList(size);
-            int rand = rng.nextInt();
+            int rand = rng.nextInt(size);
             System.out.println(size + "\t" + timeInsertion(randList, rand)
                     + "\t" + timeMerge(randList, rand)
                     + "\t" + timeQuickSelect(randList, size, rand));
