@@ -98,7 +98,7 @@ public class Algorithms {
         {
             if (left == right)
                 return L.get(left);
-            int pivotIndex = 4;// (int) (left + Math.floor(randNum.nextInt(right) % (right - left + 1)));
+            int pivotIndex = (int) (left + Math.floor(randNum.nextInt(right) % (right - left + 1)));
             pivotIndex = partition(L, left, right, pivotIndex);
             if (k == pivotIndex)
                 return L.get(k);
